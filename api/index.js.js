@@ -7,11 +7,9 @@ module.exports = async (req, res) => {
     const apiKey = process.env.OPENAI_API_KEY;
     const { action, payload } = req.body;
 
-    const path = action === 'dieta' ? '/v1/chat/completions' : '/v1/images/generations';
-    
     const body = JSON.stringify(action === 'dieta' ? {
         model: "gpt-4o",
-        messages: [{ role: "user", content: `Dieta para ${payload.peso}kg, meta ${payload.meta}kg, ingredientes ${payload.ingredientes}. JSON: {breakfast_title, breakfast_desc, breakfast_prot, lunch_title, lunch_desc, lunch_prot, dinner_title, dinner_desc, dinner_prot}` }],
+        messages: [{ role: "user", content: `Dieta para ${payload.peso}kg, meta ${payload.meta}kg, ingredientes ${payload.ingredientes}. Retorne apenas um JSON (sem texto extra) com as chaves: breakfast_title, breakfast_desc, breakfast_prot, lunch_title, lunch_desc, lunch_prot, dinner_title, dinner_desc, dinner_prot.` }],
         response_format: { type: "json_object" }
     } : {
         model: "dall-e-3",
@@ -21,7 +19,7 @@ module.exports = async (req, res) => {
 
     const options = {
         hostname: 'api.openai.com',
-        path: path,
+        path: action === 'dieta' ? '/v1/chat/completions' : '/v1/images/generations',
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiKey}`,
@@ -36,15 +34,22 @@ module.exports = async (req, res) => {
         response.on('end', () => {
             try {
                 const parsed = JSON.parse(data);
-                if (parsed.error) throw new Error(parsed.error.message);
-                
+                // Verifica se a estrutura de resposta existe
                 if (action === 'dieta') {
-                    res.status(200).json(JSON.parse(parsed.choices[0].message.content));
+                    if (parsed.choices && parsed.choices[0] && parsed.choices[0].message) {
+                        res.status(200).json(JSON.parse(parsed.choices[0].message.content));
+                    } else {
+                        throw new Error("Resposta da IA inesperada: " + data);
+                    }
                 } else {
-                    res.status(200).json({ imagemResultado: parsed.data[0].url });
+                    if (parsed.data && parsed.data[0] && parsed.data[0].url) {
+                        res.status(200).json({ imagemResultado: parsed.data[0].url });
+                    } else {
+                        throw new Error("Erro na geração da imagem: " + data);
+                    }
                 }
             } catch (e) {
-                res.status(500).json({ error: e.message, raw: data });
+                res.status(500).json({ error: e.message });
             }
         });
     });
