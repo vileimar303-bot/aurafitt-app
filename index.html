@@ -395,7 +395,13 @@
                     })
                 });
 
-                const data = await response.json();
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch(e) {
+                    throw new Error("Resposta de servidor inválida. Verifique se a sua variável GEMINI_API_KEY foi configurada corretamente na Vercel.");
+                }
 
                 if (data.error) {
                     throw new Error(data.error);
@@ -431,7 +437,7 @@
 
             } catch (error) {
                 console.error("Erro na simulação:", error);
-                alert("Falha ao processar simulação visual com a IA: " + error.message);
+                alert("Falha ao processar simulação com a IA: " + error.message);
             } finally {
                 document.getElementById('simulation-spinner').classList.add('hidden');
                 document.getElementById('simulation-result').classList.remove('hidden');
@@ -469,7 +475,13 @@
                     })
                 });
 
-                const data = await response.json();
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch(e) {
+                    throw new Error("Resposta de servidor inválida. Verifique se a sua variável GEMINI_API_KEY foi configurada corretamente na Vercel.");
+                }
 
                 if (data.error) {
                     throw new Error(data.error);

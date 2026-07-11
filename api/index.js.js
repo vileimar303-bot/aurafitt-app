@@ -1,19 +1,21 @@
 /**
- * AuraFit AI - Cérebro do Servidor (api/index.js)
- * * Este é o código "invisível" que fica no servidor. 
- * Ele recebe a foto e os dados do seu 'index.html' e os envia de forma segura
- * para a Inteligência Artificial do Google processar a dieta e gerar a imagem.
+ * AuraFitt AI - Cérebro do Servidor (api/index.js)
+ * -------------------------------------------------------------------------
+ * Este código roda em segredo nos servidores da Vercel.
+ * Ele recebe as fotos e ingredientes do seu 'index.html' e envia com segurança
+ * para as APIs de Inteligência Artificial do Google Gemini.
  */
 
-const fetch = require('node-fetch');
-
-// A chave da API fica protegida de forma segura nas configurações da sua hospedagem
+// A chave de API do Google fica protegida aqui (Vercel lê das variáveis de ambiente)
 const apiKey = process.env.GEMINI_API_KEY || ""; 
 
-// Função de atraso para segurança contra falhas de rede
+// Função para fazer o sistema esperar (usada nas tentativas de re-conexão)
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Função de tentativas automáticas de conexão
+/**
+ * Função de requisição com tentativas automáticas (Retry)
+ * Se a internet falhar ou o Google estiver sobrecarregado, ele tenta de novo até 5 vezes.
+ */
 async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
     try {
         const response = await fetch(url, options);
@@ -33,7 +35,7 @@ async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
 }
 
 module.exports = async (req, res) => {
-    // Configurações de segurança CORS para conectar seu app com o servidor
+    // Configurações de segurança (CORS) para permitir que seu index.html acesse este arquivo
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -42,6 +44,7 @@ module.exports = async (req, res) => {
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
 
+    // Responde requisições de teste de conexão do navegador
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
@@ -58,19 +61,23 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: 'Ação não especificada.' });
         }
 
+        if (!apiKey) {
+            return res.status(500).json({ error: 'Configuração incompleta: Chave GEMINI_API_KEY não foi encontrada na Vercel.' });
+        }
+
         // =========================================================================
-        // FUNCIONALIDADE 1: GERADOR DE DIETA PROTEICA (AURA DIETA)
+        // AÇÃO 1: GERADOR DE DIETA (AURA DIETA)
         // =========================================================================
         if (action === 'dieta') {
             const { ingredientes, peso, meta, idade, altura } = payload;
 
-            const systemPrompt = `Atue como um Nutricionista Clínico e Esportivo de Elite da equipe AuraFit. 
+            const systemPrompt = `Atue como um Nutricionista Clínico e Esportivo de Elite da equipe AuraFitt. 
             Você deve criar um plano de refeições focado em emagrecimento saudável, alta saciedade (ideal para usuários de co-agonistas como Mounjaro) e máxima preservação de massa muscular. 
             Calcule os macronutrientes de forma aproximada baseado no peso corporal de ${peso}kg, altura ${altura}m e meta de ${meta}kg.
             
-            Gere um cardápio com 3 refeições hiperproteicas utilizando primordialmente os ingredientes informados: "${ingredientes}".
+            Gere um cardápio com 3 refeições hiperproteicas utilizando primordialmente os ingredientes informados pelo usuário: "${ingredientes}".
             
-            Retorne a resposta estritamente no seguinte formato JSON, sem marcações markdown como \`\`\`json:
+            Retorne a resposta estritamente no seguinte formato JSON, sem marcações de markdown como \`\`\`json:
             {
                 "breakfast_title": "Nome criativo do café da manhã",
                 "breakfast_desc": "Instruções fáceis e rápidas de preparo.",
@@ -96,7 +103,7 @@ module.exports = async (req, res) => {
 
             if (!response.ok) {
                 const errText = await response.text();
-                throw new Error(`Erro na IA de Dieta: ${errText}`);
+                throw new Error(`Erro na API de Dieta do Gemini: ${errText}`);
             }
 
             const data = await response.json();
@@ -106,7 +113,7 @@ module.exports = async (req, res) => {
         }
 
         // =========================================================================
-        // FUNCIONALIDADE 2: SIMULADOR DE IMAGEM REALISTA (AURA EVOLUÇÃO)
+        // AÇÃO 2: SIMULADOR DE IMAGEM (AURA EVOLUÇÃO)
         // =========================================================================
         if (action === 'simulador') {
             const { fotoBase64, peso, meta, meses, cintura } = payload;
@@ -121,10 +128,10 @@ module.exports = async (req, res) => {
             Show reduction of visceral fat, highly defined jawline, toned abdominal muscles, and an athletic, healthy posture. 
             Preserve the exact facial features, skin tone, and hair of the original subject. High-end clinic design aesthetic.`;
 
-            // Utiliza o modelo correto e homologado para processamento de imagem (Image-to-Image)
+            // Modelo oficial do Gemini configurado para receber imagem e devolver imagem modificada
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
 
-            // Limpa o cabeçalho base64 padrão da imagem
+            // Remove o cabeçalho do base64 (ex: 'data:image/png;base64,') se o navegador enviar
             const base64Data = fotoBase64.replace(/^data:image\/\w+;base64,/, "");
 
             const response = await fetchWithRetry(url, {
@@ -152,14 +159,14 @@ module.exports = async (req, res) => {
 
             if (!response.ok) {
                 const errText = await response.text();
-                throw new Error(`Erro na IA de Imagem: ${errText}`);
+                throw new Error(`Erro na API de Imagem do Gemini: ${errText}`);
             }
 
             const data = await response.json();
             const base64ImageOut = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
 
             if (!base64ImageOut) {
-                throw new Error("A IA processou o pedido mas não retornou nenhuma imagem.");
+                throw new Error("O Google processou a sua imagem mas não conseguiu devolver o resultado. Verifique se a foto de rosto está clara e de frente.");
             }
 
             return res.status(200).json({
@@ -171,7 +178,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Ação inválida.' });
 
     } catch (error) {
-        console.error("Erro interno no servidor AuraFit:", error);
-        return res.status(500).json({ error: 'Erro interno no servidor: ' + error.message });
+        console.error("Erro interno no servidor AuraFitt:", error);
+        return res.status(500).json({ error: error.message });
     }
 };
