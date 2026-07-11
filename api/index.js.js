@@ -4,13 +4,15 @@
  * Este código roda em segredo nos servidores da Vercel.
  * Ele recebe as fotos e ingredientes do seu 'index.html' e envia com segurança
  * para as APIs de Inteligência Artificial do Google Gemini.
+ * 
+ * NOTA: Atualizado para os modelos estáveis estáveis 'gemini-2.5-flash' e 
+ * 'gemini-2.5-flash-image' para evitar o erro de modelo descontinuado (404).
  */
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // A chave de API do Google fica protegida aqui (Vercel lê das variáveis de ambiente)
 const apiKey = process.env.GEMINI_API_KEY || ""; 
-
-// Função para fazer o sistema esperar (usada nas tentativas de re-conexão)
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Função de requisição com tentativas automáticas (Retry)
@@ -90,7 +92,8 @@ module.exports = async (req, res) => {
                 "dinner_prot": "Carb: ~Xg | Prot: Yg"
             }`;
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            // Utilizando o modelo estável padrão gemini-2.5-flash
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             
             const response = await fetchWithRetry(url, {
                 method: 'POST',
@@ -128,8 +131,8 @@ module.exports = async (req, res) => {
             Show reduction of visceral fat, highly defined jawline, toned abdominal muscles, and an athletic, healthy posture. 
             Preserve the exact facial features, skin tone, and hair of the original subject. High-end clinic design aesthetic.`;
 
-            // Modelo oficial do Gemini configurado para receber imagem e devolver imagem modificada
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+            // Utilizando o modelo de imagem estável e homologado de 2026: gemini-2.5-flash-image
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${apiKey}`;
 
             // Remove o cabeçalho do base64 (ex: 'data:image/png;base64,') se o navegador enviar
             const base64Data = fotoBase64.replace(/^data:image\/\w+;base64,/, "");
