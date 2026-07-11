@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
     const apiKey = process.env.OPENAI_API_KEY;
     const { action, payload } = req.body;
 
+    // Removemos qualquer 'require' externo. Usamos apenas https nativo do Node.js
     const options = {
         hostname: 'api.openai.com',
         path: action === 'dieta' ? '/v1/chat/completions' : '/v1/images/generations',
@@ -19,7 +20,7 @@ module.exports = async (req, res) => {
 
     const body = JSON.stringify(action === 'dieta' ? {
         model: "gpt-4o",
-        messages: [{ role: "user", content: `Dieta: ${payload.peso}kg, meta ${payload.meta}kg, ingredientes ${payload.ingredientes}. JSON format: {breakfast_title, breakfast_desc, breakfast_prot, lunch_title, lunch_desc, lunch_prot, dinner_title, dinner_desc, dinner_prot}` }],
+        messages: [{ role: "user", content: `Dieta para ${payload.peso}kg, meta ${payload.meta}kg, ingredientes ${payload.ingredientes}. Retorne apenas um JSON (sem texto extra) com as chaves: breakfast_title, breakfast_desc, breakfast_prot, lunch_title, lunch_desc, lunch_prot, dinner_title, dinner_desc, dinner_prot.` }],
         response_format: { type: "json_object" }
     } : {
         model: "dall-e-3",
@@ -33,12 +34,18 @@ module.exports = async (req, res) => {
         response.on('end', () => {
             try {
                 const parsed = JSON.parse(data);
-                if (action === 'dieta') res.status(200).json(JSON.parse(parsed.choices[0].message.content));
-                else res.status(200).json({ imagemResultado: parsed.data[0].url });
-            } catch (e) { res.status(500).json({ error: data }); }
+                if (action === 'dieta') {
+                    res.status(200).json(JSON.parse(parsed.choices[0].message.content));
+                } else {
+                    res.status(200).json({ imagemResultado: parsed.data[0].url });
+                }
+            } catch (e) {
+                res.status(500).json({ error: "Erro ao processar resposta: " + data });
+            }
         });
     });
 
+    request.on('error', (e) => res.status(500).json({ error: e.message }));
     request.write(body);
     request.end();
 };
