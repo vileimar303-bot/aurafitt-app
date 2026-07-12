@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraFit AI - Premium Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
+        .premium-title { font-family: 'Playfair Display', serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .glass-panel { background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.03); }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex items-center justify-center p-0 md:p-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#061810] via-[#020617] to-[#02040a]">
+
+    <div class="w-full max-w-md bg-[#040814] min-h-screen md:min-h-[850px] md:max-h-[900px] md:rounded-[42px] md:border-8 md:border-[#1e293b] shadow-[0_0_50px_rgba(16,185,129,0.1)] flex flex-col justify-between overflow-hidden relative">
+        <header class="bg-[#02050d]/90 pt-4 pb-3 px-4 border-b border-emerald-950/20 sticky top-0 z-40 backdrop-blur-md">
+            <div class="flex justify-between items-center mb-4 px-1">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-tr from-emerald-600 to-teal-400 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/30">
+                        <i class="fa-solid fa-gem text-[#02050d] font-black text-xs"></i>
+                    </div>
+                    <span class="text-lg font-extrabold tracking-tight text-white">AuraFit <span class="premium-title text-emerald-400 italic font-normal">AI</span></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow p-4 overflow-y-auto no-scrollbar">
+            <div class="tab-content space-y-4">
+                <div class="glass-panel p-4 rounded-2xl border border-emerald-500/10">
+                    <h3 class="text-white font-extrabold text-base">O que tem em casa hoje?</h3>
+                    <textarea id="diet-ingredients" rows="3" placeholder="Ex: ovos, peito de frango, aveia..." class="w-full mt-3 bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100"></textarea>
+                </div>
+
+                <button onclick="gerarDieta()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs uppercase shadow-xl shadow-emerald-500/10 transition-all">
+                    Montar Prato Proteico
+                </button>
+
+                <div id="diet-spinner" class="hidden text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto"></div>
+                </div>
+
+                <div id="diet-result" class="hidden space-y-4 animate-fade-in">
+                    <div class="bg-slate-950 border border-emerald-950/15 rounded-2xl p-4">
+                        <p class="text-emerald-400 font-bold mb-1">Café da Manhã</p>
+                        <p id="b-title" class="text-sm font-bold"></p>
+                        <p id="b-desc" class="text-xs text-slate-400"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function gerarDieta() {
+            document.getElementById('diet-spinner').classList.remove('hidden');
+            const ingredients = document.getElementById('diet-ingredients').value;
+            
+            try {
+                const response = await fetch('/api/index', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        action: 'dieta', 
+                        peso: '116', 
+                        meta: '87', 
+                        ingredientes: ingredients 
+                    })
+                });
+                const data = await response.json();
+                
+                document.getElementById('b-title').innerText = data.breakfast_title;
+                document.getElementById('b-desc').innerText = data.breakfast_desc;
+                document.getElementById('diet-result').classList.remove('hidden');
+            } catch (e) {
+                alert("Erro ao conectar com a IA");
+            } finally {
+                document.getElementById('diet-spinner').classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
