@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraFitt AI - Premium Companion</title>
+    <title>AuraFit AI - Premium Companion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,86 +14,50 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #030712;
         }
-        .premium-title {
-            font-family: 'Playfair Display', serif;
-        }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
+        .premium-title { font-family: 'Playfair Display', serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel { background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.03); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex items-center justify-center p-0 md:p-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#061810] via-[#020617] to-[#02040a]">
 
-    <!-- Smartphone Frame Container -->
     <div class="w-full max-w-md bg-[#040814] min-h-screen md:min-h-[850px] md:max-h-[900px] md:rounded-[42px] md:border-8 md:border-[#1e293b] shadow-[0_0_50px_rgba(16,185,129,0.1)] flex flex-col justify-between overflow-hidden relative">
         
-        <!-- Status Bar Mock -->
-        <div class="hidden md:flex justify-between items-center px-8 py-3 bg-[#02050d] text-xs text-slate-500 font-mono tracking-widest border-b border-slate-950 z-50">
-            <span class="text-[10px] text-emerald-500/75"><i class="fa-solid fa-circle-check mr-1 animate-pulse"></i>AURAFITT OS v1.5</span>
-            <div class="w-20 h-4 bg-black rounded-full mx-auto absolute left-1/2 transform -translate-x-1/2 top-2"></div>
-            <div class="flex items-center gap-2 text-[10px]">
-                <i class="fa-solid fa-wifi"></i>
-                <i class="fa-solid fa-battery-full text-emerald-500"></i>
-                <span>100%</span>
-            </div>
-        </div>
-
-        <!-- APP HEADER -->
         <header class="bg-[#02050d]/90 pt-4 pb-3 px-4 border-b border-emerald-950/20 sticky top-0 z-40 backdrop-blur-md">
             <div class="flex justify-between items-center mb-4 px-1">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-gradient-to-tr from-emerald-600 to-teal-400 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/30">
                         <i class="fa-solid fa-gem text-[#02050d] font-black text-xs"></i>
                     </div>
-                    <span class="text-lg font-extrabold tracking-tight text-white">AuraFitt <span class="premium-title text-emerald-400 italic font-normal">AI</span></span>
+                    <span class="text-lg font-extrabold tracking-tight text-white">AuraFit <span class="premium-title text-emerald-400 italic font-normal">AI</span></span>
                 </div>
                 <span class="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">Premium Companion</span>
             </div>
 
-            <!-- Horizontal Navigation Tabs -->
             <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
                 <button onclick="switchTab('cadastro')" id="btn-cadastro" class="tab-btn flex-none flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all duration-300 transform active:scale-95">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <span>1. Meu Perfil</span>
+                    <i class="fa-solid fa-user-gear"></i><span>1. Meu Perfil</span>
                 </button>
                 <button onclick="switchTab('simulador')" id="btn-simulador" class="tab-btn flex-none flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 font-semibold text-xs transition-all duration-300 transform active:scale-95">
-                    <i class="fa-solid fa-magnifying-glass-chart"></i>
-                    <span>2. Simulador Visual</span>
+                    <i class="fa-solid fa-magnifying-glass-chart"></i><span>2. Simulador</span>
                 </button>
                 <button onclick="switchTab('dieta')" id="btn-dieta" class="tab-btn flex-none flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 font-semibold text-xs transition-all duration-300 transform active:scale-95">
-                    <i class="fa-solid fa-wheat-awn"></i>
-                    <span>3. Prato Proteico</span>
+                    <i class="fa-solid fa-wheat-awn"></i><span>3. Dieta</span>
                 </button>
             </div>
         </header>
 
-        <!-- APP MAIN CONTENT -->
         <main class="flex-grow p-4 overflow-y-auto no-scrollbar max-h-[calc(100vh-140px)] md:max-h-[700px]">
             
-            <!-- TAB 1: CADASTRO -->
-            <div id="tab-cadastro" class="tab-content space-y-5">
+            <div id="tab-cadastro" class="tab-content space-y-5 animate-fade-in">
                 <div class="glass-panel p-4 rounded-2xl border border-emerald-500/10 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none"></div>
-                    <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400 block mb-1">Clínica Digital AuraFitt</span>
-                    <h3 class="text-white font-extrabold text-base">Passo 1: Seus Dados de Calibração</h3>
-                    <p class="text-[11px] text-slate-400 mt-1">Preencha suas métricas atuais. Nossa inteligência artificial usará esses dados junto à foto para projetar a evolução real do seu metabolismo.</p>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400 block mb-1">Clínica Digital</span>
+                    <h3 class="text-white font-extrabold text-base">Seus Dados de Calibração</h3>
                 </div>
-
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Nome Completo</label>
-                        <input type="text" id="user-name" value="Vilei" class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-all">
-                    </div>
-                    
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Peso Atual (kg)</label>
@@ -104,366 +68,105 @@
                             <input type="number" id="user-target-weight" value="87" class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-all">
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Altura (m)</label>
-                            <input type="number" step="0.01" id="user-height" value="1.79" class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Idade</label>
-                            <input type="number" id="user-age" value="33" class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-all">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Cintura Atual (cm)</label>
-                        <input type="number" id="user-waist" value="112" class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-all">
-                    </div>
                 </div>
-
-                <button onclick="saveAndGoToSimulator()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs tracking-widest uppercase shadow-lg shadow-emerald-550/10 active:scale-95 transition-all">
-                    Salvar e Ir para o Simulador <i class="fa-solid fa-arrow-right ml-1"></i>
+                <button onclick="switchTab('dieta')" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs tracking-widest uppercase shadow-lg shadow-emerald-550/10 active:scale-95 transition-all">
+                    Avançar para Dieta <i class="fa-solid fa-arrow-right ml-1"></i>
                 </button>
             </div>
 
-            <!-- TAB 2: SIMULADOR -->
-            <div id="tab-simulador" class="tab-content hidden space-y-4">
-                
-                <!-- Photo Upload Area -->
-                <div class="bg-slate-900/40 border border-dashed border-emerald-500/10 p-5 rounded-2xl text-center space-y-3 glass-panel relative">
-                    <input type="file" id="file-input" class="hidden" accept="image/*">
-                    
-                    <div id="upload-placeholder" class="space-y-3">
-                        <div class="w-12 h-12 bg-emerald-950/20 rounded-full flex items-center justify-center mx-auto text-emerald-400 border border-emerald-900/40">
-                            <i class="fa-solid fa-camera text-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-white">Carregue sua foto de referência</p>
-                            <p class="text-[10px] text-slate-400 mt-1">Nossa IA mapeará os traços faciais para manter a sua identidade idêntica no resultado.</p>
-                        </div>
-                        <button onclick="document.getElementById('file-input').click()" class="inline-block text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-1.5 rounded-lg cursor-pointer uppercase tracking-wider">
-                            Selecionar Imagem
-                        </button>
-                    </div>
-
-                    <!-- Upload Preview -->
-                    <div id="upload-preview-container" class="hidden space-y-2">
-                        <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Foto Carregada com sucesso!</p>
-                        <img id="upload-preview" class="w-24 h-24 rounded-xl object-cover mx-auto border border-emerald-500/30 shadow-lg">
-                        <button onclick="document.getElementById('file-input').click()" class="text-[9px] text-slate-400 underline hover:text-white">Substituir foto</button>
-                    </div>
+            <div id="tab-simulador" class="tab-content hidden space-y-4 animate-fade-in">
+                <div class="glass-panel p-4 rounded-2xl border border-emerald-500/10 text-center">
+                    <p class="text-sm text-emerald-400 font-bold">Simulador Visual em Manutenção</p>
+                    <p class="text-xs text-slate-400 mt-2">Estamos calibrando o modelo de imagem para o seu perfil.</p>
                 </div>
-
-                <!-- Simulation Range Selector -->
-                <div class="bg-slate-900/40 p-4 rounded-2xl border border-slate-900 space-y-3 glass-panel">
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Escolha o Período da Projeção:</label>
-                    <div class="grid grid-cols-4 gap-1.5" id="month-selectors">
-                        <button onclick="setSimulationMonth(1)" id="btn-m1" class="month-btn py-2 text-[11px] font-bold rounded-lg bg-slate-950 text-slate-400 border border-slate-900 transition-all">1 Mês</button>
-                        <button onclick="setSimulationMonth(2)" id="btn-m2" class="month-btn py-2 text-[11px] font-bold rounded-lg bg-slate-950 text-slate-400 border border-slate-900 transition-all">2 Meses</button>
-                        <button onclick="setSimulationMonth(3)" id="btn-m3" class="month-btn py-2 text-[11px] font-bold rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 transition-all">3 Meses</button>
-                        <button onclick="setSimulationMonth(4)" id="btn-m4" class="month-btn py-2 text-[11px] font-bold rounded-lg bg-slate-950 text-slate-400 border border-slate-900 transition-all">4 Meses</button>
-                    </div>
-                </div>
-
-                <!-- Generate Action Button -->
-                <button onclick="startSimulation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs tracking-widest uppercase shadow-xl shadow-emerald-550/15 active:scale-95 transition-all">
-                    Gerar Projeção Visual <i class="fa-solid fa-wand-magic-sparkles ml-1"></i>
-                </button>
-
-                <!-- Processing Spinner -->
-                <div id="simulation-spinner" class="hidden text-center py-8 space-y-3">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto"></div>
-                    <p class="text-xs text-emerald-400 font-semibold animate-pulse tracking-wide">Iniciando renderizador neural AuraFitt AI...</p>
-                </div>
-
-                <!-- SIMULATOR RESULT PANEL -->
-                <div id="simulation-result" class="hidden space-y-4">
-                    
-                    <!-- Interactive Visual Box -->
-                    <div class="bg-slate-950 border border-emerald-950/20 rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-slate-900/50 p-3.5 flex justify-between items-center border-b border-emerald-950/25">
-                            <span class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase"><i class="fa-solid fa-microchip mr-1.5"></i>PREVISÃO AURAFITT: <span id="res-month-title">3 MESES</span></span>
-                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-mono font-bold" id="res-weight-tag">96.0kg</span>
-                        </div>
-
-                        <!-- Simulated Body Shape Display -->
-                        <div class="p-6 bg-gradient-to-b from-[#030814] to-[#010308] flex flex-col items-center justify-center min-h-[250px] relative">
-                            
-                            <!-- Imagem Final Gerada Pela IA -->
-                            <img id="simulation-image-result" class="hidden w-full max-h-[350px] rounded-xl object-contain shadow-2xl border border-emerald-500/20" alt="Resultado de Projeção">
-
-                            <!-- Dynamic Silhouette Morph representation -->
-                            <div id="morph-container" class="w-32 h-44 bg-slate-900/60 rounded-2xl relative flex items-center justify-center border border-slate-800/80 overflow-hidden shadow-inner">
-                                <div id="morph-shape" class="transition-all duration-1000 bg-gradient-to-t from-emerald-500/20 to-teal-400/5 border-2 border-emerald-400/20" style="width: 70%; height: 90%; border-radius: 40% 40% 30% 30%;">
-                                    <div class="w-full h-full flex flex-col justify-around opacity-20 p-2">
-                                        <div class="h-[1px] bg-emerald-500 w-full"></div>
-                                        <div class="h-[1px] bg-emerald-500 w-full"></div>
-                                        <div class="h-[1px] bg-emerald-500 w-full"></div>
-                                    </div>
-                                </div>
-                                <div class="absolute top-4 w-12 h-12 rounded-full border border-emerald-400/30 overflow-hidden bg-slate-850 flex items-center justify-center text-slate-500">
-                                    <i class="fa-solid fa-user-tie text-lg"></i>
-                                </div>
-                            </div>
-
-                            <p class="text-[9px] text-slate-500 mt-4 tracking-wider uppercase"><i class="fa-solid fa-circle-info mr-1"></i>Modelo preditivo de composição corporal AuraFitt</p>
-                        </div>
-                    </div>
-
-                    <!-- Projected Stats Cards -->
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="bg-slate-900/40 border border-slate-900 p-3 rounded-xl text-center glass-panel">
-                            <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">Peso Alvo</span>
-                            <span class="text-sm font-extrabold text-white" id="stat-weight">96kg</span>
-                        </div>
-                        <div class="bg-slate-900/40 border border-emerald-950/20 p-3 rounded-xl text-center glass-panel">
-                            <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">Gordura %</span>
-                            <span class="text-sm font-extrabold text-emerald-400" id="stat-fat">24-25%</span>
-                        </div>
-                        <div class="bg-slate-900/40 border border-slate-900 p-3 rounded-xl text-center glass-panel">
-                            <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">Cintura</span>
-                            <span class="text-sm font-extrabold text-white" id="stat-waist">~92cm</span>
-                        </div>
-                    </div>
-
-                    <!-- Face specific projections text -->
-                    <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-900 space-y-2.5 glass-panel">
-                        <span class="block text-xs font-bold text-amber-300 tracking-wider"><i class="fa-solid fa-face-smile mr-1.5"></i>Evolução da Estrutura Facial:</span>
-                        <p class="text-xs text-slate-300 leading-relaxed" id="res-face-description">• Mandíbula bem desenhada e marcante.<br>• Rosto bem mais seco e expressivo.<br>• Expressão muito mais firme e jovial.</p>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- TAB 3: DIETA -->
-            <div id="tab-dieta" class="tab-content hidden space-y-4">
+            <div id="tab-dieta" class="tab-content hidden space-y-4 animate-fade-in">
                 <div class="glass-panel p-4 rounded-2xl border border-emerald-500/10 relative overflow-hidden">
                     <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400 block mb-1">Nutrição Clínica</span>
                     <h3 class="text-white font-extrabold text-base">O que tem em casa hoje?</h3>
-                    <p class="text-[11px] text-slate-400 mt-1">Insira os ingredientes disponíveis na sua despensa para criarmos um protocolo focado em saciedade extrema e manutenção muscular.</p>
+                    <p class="text-[11px] text-slate-400 mt-1">Insira os ingredientes disponíveis na sua despensa.</p>
                 </div>
 
                 <div class="space-y-2">
-                    <textarea id="diet-ingredients" rows="3" placeholder="Ex: ovos, peito de frango, aveia, banana, abobrinha, queijo cottage..." class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors resize-none"></textarea>
+                    <textarea id="diet-ingredients" rows="3" placeholder="Ex: ovos, frango, aveia, banana..." class="w-full bg-[#080d1a] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors resize-none"></textarea>
                 </div>
 
-                <!-- Diet Action Button -->
                 <button onclick="generateDiet()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs tracking-widest uppercase shadow-xl shadow-emerald-500/10 active:scale-95 transition-all">
-                    Montar Prato Proteico <i class="fa-solid fa-utensils ml-1"></i>
+                    Gerar Prato Proteico (IA) <i class="fa-solid fa-wand-magic-sparkles ml-1"></i>
                 </button>
 
-                <!-- Processing Spinner for Diet -->
                 <div id="diet-spinner" class="hidden text-center py-8 space-y-3">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto"></div>
-                    <p class="text-xs text-emerald-400 font-semibold animate-pulse tracking-wide">Calculando balanço nitrogenado positivo com AuraFitt AI...</p>
+                    <p class="text-xs text-emerald-400 font-semibold animate-pulse tracking-wide" id="loading-text">Calculando com Inteligência Artificial...</p>
                 </div>
 
-                <!-- DIET RESULT BOX -->
                 <div id="diet-result" class="hidden space-y-4 animate-fade-in">
-                    
                     <div class="bg-slate-950 border border-emerald-950/15 rounded-2xl overflow-hidden">
                         <div class="bg-slate-900/50 p-3.5 border-b border-emerald-950/20 flex justify-between items-center">
-                            <span class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase">PLANEJAMENTO DE REFEIÇÃO</span>
+                            <span class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase">DIETA GERADA</span>
                             <span class="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Hiperproteico</span>
                         </div>
 
                         <div class="p-4 space-y-4 divide-y divide-slate-900 text-sm">
-                            
-                            <!-- Cafe da Manha -->
                             <div class="pt-0 space-y-1.5">
-                                <span class="text-[10px] font-bold text-amber-300 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-mug-saucer"></i> REFEIÇÃO MATINAL</span>
-                                <p class="text-slate-100 font-bold" id="breakfast-title">Aguardando...</p>
-                                <p class="text-xs text-slate-400 leading-relaxed" id="breakfast-desc">Selecione seus ingredientes e clique em gerar.</p>
+                                <span class="text-[10px] font-bold text-amber-300 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-mug-saucer"></i> CAFÉ DA MANHÃ</span>
+                                <p class="text-slate-100 font-bold" id="breakfast-title">-</p>
+                                <p class="text-xs text-slate-400 leading-relaxed" id="breakfast-desc">-</p>
                                 <span class="inline-block text-[9px] bg-slate-900 text-slate-300 font-extrabold px-2 py-0.5 rounded" id="breakfast-prot">-</span>
                             </div>
-
-                            <!-- Almoço -->
                             <div class="pt-3 space-y-1.5">
-                                <span class="text-[10px] font-bold text-emerald-400 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-bowl-food"></i> REFEIÇÃO PRINCIPAL</span>
-                                <p class="text-slate-100 font-bold" id="lunch-title">Aguardando...</p>
-                                <p class="text-xs text-slate-400 leading-relaxed" id="lunch-desc">Selecione seus ingredientes e clique em gerar.</p>
+                                <span class="text-[10px] font-bold text-emerald-400 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-bowl-food"></i> ALMOÇO</span>
+                                <p class="text-slate-100 font-bold" id="lunch-title">-</p>
+                                <p class="text-xs text-slate-400 leading-relaxed" id="lunch-desc">-</p>
                                 <span class="inline-block text-[9px] bg-slate-900 text-slate-300 font-extrabold px-2 py-0.5 rounded" id="lunch-prot">-</span>
                             </div>
-
-                            <!-- Jantar -->
                             <div class="pt-3 space-y-1.5">
-                                <span class="text-[10px] font-bold text-emerald-400 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-moon"></i> REFEIÇÃO DA NOITE</span>
-                                <p class="text-slate-100 font-bold" id="dinner-title">Aguardando...</p>
-                                <p class="text-xs text-slate-400 leading-relaxed" id="dinner-desc">Selecione seus ingredientes e clique em gerar.</p>
+                                <span class="text-[10px] font-bold text-emerald-400 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-moon"></i> JANTAR</span>
+                                <p class="text-slate-100 font-bold" id="dinner-title">-</p>
+                                <p class="text-xs text-slate-400 leading-relaxed" id="dinner-desc">-</p>
                                 <span class="inline-block text-[9px] bg-slate-900 text-slate-300 font-extrabold px-2 py-0.5 rounded" id="dinner-prot">-</span>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
 
             </div>
-
         </main>
-
-        <!-- APP FOOTER -->
-        <footer class="bg-[#02050d] py-3.5 px-4 text-center border-t border-slate-950 text-[9px] text-slate-500 space-y-1">
-            <p>AuraFitt AI © 2026 - Evolução inteligente de composição corporal.</p>
-            <p class="text-emerald-500/70 font-semibold tracking-widest uppercase">"Disciplina hoje, liberdade amanhã."</p>
-        </footer>
-
     </div>
 
-    <!-- JS Logic -->
     <script>
-        const API_KEY = "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";
-        
-        let currentMonth = 3;
-        let activeTab = 'cadastro';
-        let base64Photo = ""; 
-
-        document.getElementById('file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    base64Photo = event.target.result;
-                    document.getElementById('upload-preview').src = base64Photo;
-                    document.getElementById('upload-preview-container').classList.remove('hidden');
-                    document.getElementById('upload-placeholder').classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.className = "tab-btn flex-none flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 font-semibold text-xs transition-all duration-300 transform active:scale-95";
             });
-
             const activeBtn = document.getElementById(`btn-${tabId}`);
             activeBtn.className = "tab-btn flex-none flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all duration-300 transform active:scale-95";
-
-            activeTab = tabId;
-        }
-
-        function saveAndGoToSimulator() {
-            switchTab('simulador');
-        }
-
-        function setSimulationMonth(month) {
-            currentMonth = month;
-            document.querySelectorAll('.month-btn').forEach(btn => {
-                btn.className = "month-btn py-2 text-[11px] font-bold rounded-lg bg-slate-950 text-slate-400 border border-slate-900 transition-all";
-            });
-
-            const activeBtn = document.getElementById(`btn-m${month}`);
-            activeBtn.className = "month-btn py-2 text-[11px] font-bold rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 transition-all";
-        }
-
-        async function startSimulation() {
-            if (!base64Photo) {
-                alert("Por favor, selecione uma foto de referência antes de iniciar a projeção.");
-                return;
-            }
-
-            document.getElementById('simulation-spinner').classList.remove('hidden');
-            document.getElementById('simulation-result').classList.add('hidden');
-
-            const currentWeight = parseFloat(document.getElementById('user-weight').value) || 116;
-            const targetWeight = parseFloat(document.getElementById('user-target-weight').value) || 87;
-            const currentWaist = parseFloat(document.getElementById('user-waist').value) || 112;
-
-            const weightDiff = currentWeight - targetWeight;
-            const waistDiff = currentWaist - 85;
-
-            let projectedWeight = currentWeight - (weightDiff * (currentMonth / 4));
-            let projectedWaist = currentWaist - (waistDiff * (currentMonth / 4));
-            let projectedFat = currentMonth === 4 ? "18-20%" : (35 - (currentMonth * 4)) + "%";
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/images/generations', {
-                    method: 'POST',
-                    headers: { 
-                        'Authorization': `Bearer ${API_KEY}`,
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify({
-                        model: "dall-e-3",
-                        prompt: "Professional fitness transformation photo. A person who lost weight, looking healthier and muscular, maintaining natural facial features. Studio lighting, high definition.",
-                        n: 1,
-                        size: "1024x1024"
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    throw new Error(data.error.message);
-                }
-
-                const resultImg = document.getElementById('simulation-image-result');
-                resultImg.src = data.data[0].url;
-                resultImg.classList.remove('hidden');
-                document.getElementById('morph-container').classList.add('hidden'); 
-
-                let faceDesc = "";
-                switch(currentMonth) {
-                    case 1:
-                        faceDesc = "• Linhas da bochecha sutilmente mais alongadas.<br>• Início de redução na área submentoniana (papada).<br>• Aparência descansada.";
-                        break;
-                    case 2:
-                        faceDesc = "• Mandíbula mais definida e queixo projetado.<br>• Região malar (maçãs do rosto) em maior evidência.<br>• Redução expressiva do inchaço facial.";
-                        break;
-                    case 3:
-                        faceDesc = "• Contorno mandibular bem demarcado e anguloso.<br>• Têmporas e bochechas secas, criando profundidade.<br>• Aparência geral rejuvenescida.";
-                        break;
-                    case 4:
-                        faceDesc = "• Definição facial máxima. Linha de mandíbula esculpida.<br>• Pele firme e colada à musculatura do rosto.<br>• Aparência 5 anos mais jovem.";
-                        break;
-                }
-
-                document.getElementById('res-month-title').innerText = `${currentMonth} ${currentMonth === 1 ? 'MÊS' : 'MESES'}`;
-                document.getElementById('res-weight-tag').innerText = `${projectedWeight.toFixed(1)}kg`;
-                document.getElementById('stat-weight').innerText = `${projectedWeight.toFixed(1)}kg`;
-                document.getElementById('stat-waist').innerText = `~${projectedWaist.toFixed(0)}cm`;
-                document.getElementById('stat-fat').innerText = projectedFat;
-                document.getElementById('res-face-description').innerHTML = faceDesc;
-
-            } catch (error) {
-                console.error("Erro na simulação:", error);
-                alert("Falha ao processar simulação com a IA: " + error.message);
-            } finally {
-                document.getElementById('simulation-spinner').classList.add('hidden');
-                document.getElementById('simulation-result').classList.remove('hidden');
-            }
         }
 
         async function generateDiet() {
-            const ingredientes = document.getElementById('diet-ingredients').value;
-            if (!ingredientes) {
-                alert("Por favor, digite pelo menos um ingrediente disponível na sua casa.");
-                return;
-            }
-
             document.getElementById('diet-spinner').classList.remove('hidden');
             document.getElementById('diet-result').classList.add('hidden');
-
-            const currentWeight = document.getElementById('user-weight').value;
-            const targetWeight = document.getElementById('user-target-weight').value;
+            
+            const apiKey = "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";
+            const peso = document.getElementById('user-weight').value || '116';
+            const meta = document.getElementById('user-target-weight').value || '87';
+            const ingredientes = document.getElementById('diet-ingredients').value || 'ingredientes variados';
 
             try {
                 const response = await fetch('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
-                    headers: { 
-                        'Authorization': `Bearer ${API_KEY}`,
-                        'Content-Type': 'application/json' 
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         model: "gpt-4o",
                         messages: [{
                             role: "user",
-                            content: `Nutricionista: Crie dieta para ${currentWeight}kg, meta ${targetWeight}kg. Ingredientes: ${ingredientes}. Responda APENAS em JSON exato: {"breakfast_title": "...", "breakfast_desc": "...", "breakfast_prot": "...", "lunch_title": "...", "lunch_desc": "...", "lunch_prot": "...", "dinner_title": "...", "dinner_desc": "...", "dinner_prot": "..."}`
+                            content: `Crie uma dieta para pessoa de ${peso}kg com meta de ${meta}kg. Ingredientes disponíveis: ${ingredientes}. Responda APENAS com um objeto JSON válido. Use exatamente estas chaves: "breakfast_title", "breakfast_desc", "breakfast_prot", "lunch_title", "lunch_desc", "lunch_prot", "dinner_title", "dinner_desc", "dinner_prot". Não escreva mais nada.`
                         }],
                         response_format: { type: "json_object" }
                     })
@@ -475,26 +178,26 @@
                     throw new Error(data.error.message);
                 }
 
-                const resultJSON = JSON.parse(data.choices[0].message.content);
+                const dietaJSON = JSON.parse(data.choices[0].message.content);
 
-                document.getElementById('breakfast-title').innerText = resultJSON.breakfast_title;
-                document.getElementById('breakfast-desc').innerText = resultJSON.breakfast_desc;
-                document.getElementById('breakfast-prot').innerText = resultJSON.breakfast_prot;
+                document.getElementById('breakfast-title').innerText = dietaJSON.breakfast_title || "-";
+                document.getElementById('breakfast-desc').innerText = dietaJSON.breakfast_desc || "-";
+                document.getElementById('breakfast-prot').innerText = dietaJSON.breakfast_prot || "-";
+                
+                document.getElementById('lunch-title').innerText = dietaJSON.lunch_title || "-";
+                document.getElementById('lunch-desc').innerText = dietaJSON.lunch_desc || "-";
+                document.getElementById('lunch-prot').innerText = dietaJSON.lunch_prot || "-";
 
-                document.getElementById('lunch-title').innerText = resultJSON.lunch_title;
-                document.getElementById('lunch-desc').innerText = resultJSON.lunch_desc;
-                document.getElementById('lunch-prot').innerText = resultJSON.lunch_prot;
+                document.getElementById('dinner-title').innerText = dietaJSON.dinner_title || "-";
+                document.getElementById('dinner-desc').innerText = dietaJSON.dinner_desc || "-";
+                document.getElementById('dinner-prot').innerText = dietaJSON.dinner_prot || "-";
 
-                document.getElementById('dinner-title').innerText = resultJSON.dinner_title;
-                document.getElementById('dinner-desc').innerText = resultJSON.dinner_desc;
-                document.getElementById('dinner-prot').innerText = resultJSON.dinner_prot;
-
-            } catch (error) {
-                console.error("Erro ao gerar dieta:", error);
-                alert("Erro ao conectar com a IA: " + error.message);
-            } finally {
                 document.getElementById('diet-spinner').classList.add('hidden');
                 document.getElementById('diet-result').classList.remove('hidden');
+
+            } catch (error) {
+                document.getElementById('diet-spinner').classList.add('hidden');
+                alert("Erro ao conectar com a IA: " + error.message);
             }
         }
     </script>
