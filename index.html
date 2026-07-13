@@ -3,80 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraFitt AI - Premium Companion</title>
+    <title>AuraFitt AI - Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f1f5f9; }
-        .glass-panel { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
-        .tab-active { background: linear-gradient(90deg, #34d399, #2dd4bf); color: #020617; }
+        :root {
+            --bg: #030712;
+            --panel: rgba(15,23,42,0.5);
+            --panelBorder: rgba(255,255,255,0.06);
+            --input: #080d1a;
+            --inputBorder: #1c2438;
+            --emerald: #34d399;
+            --textDim: #93a0b5;
+            --grad: linear-gradient(90deg, #34d399, #2dd4bf);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg); 
+            color: #f1f5f9; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center;
+        }
+        .premium-title { font-family: 'Playfair Display', serif; font-style: italic; color: var(--emerald); font-weight: 500;}
+        .glass-panel { background: var(--panel); border: 1px solid var(--panelBorder); border-radius: 16px; }
+        
+        .input-field { background: var(--input); border: 1px solid var(--inputBorder); border-radius: 12px; padding: 12px 16px; color: #f1f5f9; font-size: 14px; width: 100%; outline: none; transition: all 0.2s; }
+        .input-field:focus { border-color: var(--emerald); }
+        .input-label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--textDim); margin-bottom: 6px; margin-top: 12px; }
+        
+        .btn-primary { background: var(--grad); color: #02150f; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px; border-radius: 12px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; border: none; cursor: pointer; transition: all 0.2s; margin-top: 16px;}
+        .btn-primary:active { transform: scale(0.98); }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Botões das abas */
+        .tab-btn { flex-shrink: 0; display: flex; align-items: center; gap: 7px; padding: 9px 15px; border-radius: 999px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.2s; white-space: nowrap; border: 1px solid #1e293b; background: rgba(15,23,42,0.7); color: var(--textDim); }
+        .tab-btn.active { background: var(--grad); color: #02150f; border: none; }
+        
+        /* Controle de visibilidade das telas - CORRIGIDO */
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        .tab-content.active { display: flex; flex-direction: column; gap: 16px; }
+        
+        .month-btn { padding: 8px 0; font-size: 11px; font-weight: 700; border-radius: 8px; transition: all 0.2s; cursor: pointer; border: 1px solid #1c2438; background: #080d1a; color: var(--textDim); width: 100%; text-align: center;}
+        .month-btn.active { border: 1px solid rgba(52,211,153,0.5); background: rgba(52,211,153,0.1); color: var(--emerald); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (min-width: 768px) { 
+            .app-container { border-radius: 42px; border: 8px solid #1e293b; min-height: 850px; box-shadow: 0 0 50px rgba(16,185,129,0.05); margin-top: 20px; margin-bottom: 20px; } 
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 flex justify-center">
-    <div class="w-full max-w-sm">
-        <header class="mb-6">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center font-bold text-black">A</div>
-                <h1 class="text-xl font-bold italic">AuraFitt <span class="text-emerald-400 not-italic">AI</span></h1>
+<body class="bg-[#030712] p-0 md:p-4">
+    <div class="app-container w-full max-w-[440px] bg-[#030712] relative overflow-hidden flex flex-col min-h-screen md:min-h-[850px]">
+        
+        <!-- Header -->
+        <header class="p-5 pb-3 sticky top-0 z-40 bg-[#030712]">
+            <div class="flex justify-between items-center mb-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: var(--grad);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#02050d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9"></polygon></svg>
+                    </div>
+                    <span class="text-[20px] font-[800]">
+                        AuraFitt <span class="premium-title">AI</span>
+                    </span>
+                </div>
+                <span class="text-[9px] font-[700] uppercase tracking-[0.1em] px-2 py-1 rounded-full" style="background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--emerald);">
+                    Premium
+                </span>
             </div>
-            <div class="grid grid-cols-3 gap-2 bg-[#0f172a] p-1 rounded-full">
-                <button onclick="switchTab('perfil')" id="btn-perfil" class="tab-btn py-2 text-xs font-bold rounded-full tab-active">Perfil</button>
-                <button onclick="switchTab('simulador')" id="btn-simulador" class="tab-btn py-2 text-xs font-bold rounded-full">Simulador</button>
-                <button onclick="switchTab('proteina')" id="btn-proteina" class="tab-btn py-2 text-xs font-bold rounded-full">Proteína</button>
+
+            <!-- Tab Navigation -->
+            <div class="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+                <button onclick="switchTab('perfil', this)" class="tab-btn active">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v1"/><path d="M19 13v1"/><path d="M22 11h-1"/><path d="M17 11h-1"/></svg>
+                    Meu Perfil
+                </button>
+                <button onclick="switchTab('simulacao', this)" class="tab-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+                    Simulador
+                </button>
+                <button onclick="switchTab('proteina', this)" class="tab-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22 22 2"/><path d="M16 2a4 4 0 0 0-4 4v3l5 5h3a4 4 0 0 0 4-4 4 4 0 0 0-4-4z"/><path d="M8 8a4 4 0 0 0-4 4v3l5 5h3a4 4 0 0 0 4-4 4 4 0 0 0-4-4z"/><path d="M2 12a4 4 0 0 0 4 4h3l5-5V8a4 4 0 0 0-4-4 4 4 0 0 0-4 4z"/></svg>
+                    Dieta
+                </button>
             </div>
         </header>
 
-        <main id="content" class="glass-panel p-5 rounded-2xl">
-            <!-- PÁGINA PERFIL -->
-            <div id="tab-perfil" class="space-y-4">
-                <h2 class="font-bold">Seus Dados de Calibração</h2>
-                <input type="text" id="p-nome" placeholder="Nome" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="p-peso" placeholder="Peso (kg)" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
-                    <input type="number" id="p-meta" placeholder="Meta (kg)" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
+        <!-- Main Content -->
+        <main class="flex-grow px-5 py-2 overflow-y-auto no-scrollbar">
+            
+            <!-- 1. ABA PERFIL -->
+            <div id="tab-perfil" class="tab-content active">
+                <div class="glass-panel p-5 relative overflow-hidden">
+                    <h3 class="text-[18px] font-[800] mb-1">Passo 1: Seus Dados</h3>
+                    <p class="text-[12px]" style="color: var(--textDim);">Preencha suas métricas atuais. Nossa inteligência artificial usará esses dados para projetar a sua evolução.</p>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="p-altura" placeholder="Altura (m)" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
-                    <input type="number" id="p-idade" placeholder="Idade" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
+
+                <div class="glass-panel p-5 mt-4">
+                    <label class="input-label !mt-0">Nome Completo</label>
+                    <input type="text" class="input-field" placeholder="Seu nome">
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="input-label">Peso Atual (kg)</label>
+                            <input type="number" id="peso" class="input-field" placeholder="Ex: 85">
+                        </div>
+                        <div>
+                            <label class="input-label">Meta (kg)</label>
+                            <input type="number" class="input-field" placeholder="Ex: 75">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="input-label">Altura (m)</label>
+                            <input type="number" step="0.01" id="altura" class="input-field" placeholder="Ex: 1.75">
+                        </div>
+                        <div>
+                            <label class="input-label">Idade</label>
+                            <input type="number" class="input-field" placeholder="Ex: 30">
+                        </div>
+                    </div>
                 </div>
-                <input type="number" id="p-cintura" placeholder="Cintura (cm)" class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl text-sm">
-                <button class="w-full bg-emerald-500 text-black py-3 rounded-xl font-bold text-sm">Calcular IMC</button>
+
+                <button onclick="calcularIMC()" class="btn-primary">
+                    Calcular IMC 
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                </button>
+
+                <!-- Div de Resultado do IMC (Escondida por padrão) -->
+                <div id="imc-resultado" class="hidden glass-panel p-4 text-center border-[rgba(52,211,153,0.3)] bg-[rgba(16,185,129,0.05)] mt-2">
+                    <span id="imc-mensagem" class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Diagnóstico Corporal</span>
+                    <span id="imc-valor" class="text-xl font-extrabold text-emerald-400"></span>
+                </div>
             </div>
 
-            <!-- PÁGINA SIMULADOR -->
-            <div id="tab-simulador" class="hidden space-y-4">
-                <h2 class="font-bold">Simulador Visual</h2>
-                <div class="border-2 border-dashed border-slate-700 p-8 rounded-2xl text-center text-slate-500">Toque para selecionar foto</div>
-                <div class="flex gap-2">
-                    <button class="flex-1 py-2 rounded-lg bg-[#080d1a] text-xs font-bold">1 Mês</button>
-                    <button class="flex-1 py-2 rounded-lg bg-[#080d1a] text-xs font-bold">2 Meses</button>
-                    <button class="flex-1 py-2 rounded-lg bg-[#080d1a] text-xs font-bold">3 Meses</button>
+            <!-- 2. ABA SIMULADOR -->
+            <div id="tab-simulacao" class="tab-content">
+                <div class="glass-panel p-6 text-center">
+                    <h2 class="text-[18px] font-[800] mb-2">Simulador</h2>
+                    <p class="text-[12px] mb-6" style="color: var(--textDim);">Escolha o período da sua transformação visual.</p>
+                    
+                    <div class="grid grid-cols-4 gap-2 mb-6">
+                        <div class="month-btn active" onclick="selecionarMes(this)">1 Mês</div>
+                        <div class="month-btn" onclick="selecionarMes(this)">2 Meses</div>
+                        <div class="month-btn" onclick="selecionarMes(this)">3 Meses</div>
+                        <div class="month-btn" onclick="selecionarMes(this)">4 Meses</div>
+                    </div>
+                    
+                    <div class="border-dashed border-2 border-[#1c2438] rounded-xl p-6 bg-[#080d1a] mb-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mx-auto mb-2 text-slate-500"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                        <p class="text-[12px] font-[700] text-slate-400">Área de Upload</p>
+                    </div>
+
+                    <button class="btn-primary !mt-4">
+                        Gerar Projeção
+                    </button>
                 </div>
-                <button class="w-full bg-emerald-500 text-black py-3 rounded-xl font-bold text-sm">Gerar Projeção com IA</button>
             </div>
 
-            <!-- PÁGINA PROTEÍNA -->
-            <div id="tab-proteina" class="hidden space-y-4">
-                <h2 class="font-bold">Prato Proteico</h2>
-                <p class="text-xs text-slate-400">Monte em segundos uma refeição com prioridade em proteínas.</p>
-                <textarea class="w-full bg-[#080d1a] border border-[#1c2438] p-3 rounded-xl h-24 text-sm" placeholder="O que tem em casa hoje?"></textarea>
-                <div class="grid grid-cols-3 gap-2">
-                    <button class="py-2 rounded-lg bg-[#080d1a] text-[10px] font-bold">Café</button>
-                    <button class="py-2 rounded-lg bg-[#080d1a] text-[10px] font-bold">Almoço</button>
-                    <button class="py-2 rounded-lg bg-[#080d1a] text-[10px] font-bold">Jantar</button>
+            <!-- 3. ABA PROTEÍNA -->
+            <div id="tab-proteina" class="tab-content">
+                <div class="glass-panel p-6">
+                    <h2 class="text-[18px] font-[800] mb-2">Dieta</h2>
+                    <p class="text-[12px] mb-5" style="color: var(--textDim);">Monte em segundos uma refeição com prioridade em proteínas.</p>
+                    
+                    <textarea id="diet-ingredients" rows="4" placeholder="Ex: ovos, peito de frango, aveia, banana..." class="input-field resize-none mb-2"></textarea>
+
+                    <button onclick="generateDiet()" id="btn-gerar" class="btn-primary">
+                        Gerar Prato Proteico 
+                    </button>
+
+                    <div id="diet-result" class="hidden p-4 mt-4 text-sm text-slate-200 leading-relaxed border-t border-[#1c2438]"></div>
                 </div>
-                <button class="w-full bg-emerald-500 text-black py-3 rounded-xl font-bold text-sm">Gerar Prato Proteico</button>
             </div>
+
         </main>
     </div>
 
     <script>
-        function switchTab(id) {
-            document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
-            document.getElementById('tab-' + id).classList.remove('hidden');
-            document.getElementById('btn-' + id).classList.add('tab-active');
+        // Função de trocar abas - CORRIGIDA
+        function switchTab(tabId, btnElement) {
+            // Esconde todo o conteúdo (remove o .active que aplica o display:flex)
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Tira a cor ativa de todos os botões
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Ativa apenas a aba selecionada
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        function selecionarMes(btnElement) {
+            document.querySelectorAll('.month-btn').forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // Função IMC - CORRIGIDA (sem alerts que quebram o código)
+        function calcularIMC() {
+            let pesoInput = document.getElementById('peso').value.replace(',', '.');
+            let alturaInput = document.getElementById('altura').value.replace(',', '.');
+            
+            const peso = parseFloat(pesoInput);
+            const altura = parseFloat(alturaInput);
+            
+            const resultadoDiv = document.getElementById('imc-resultado');
+            const mensagemSpan = document.getElementById('imc-mensagem');
+            const valorSpan = document.getElementById('imc-valor');
+            
+            if (!peso || !altura) {
+                mensagemSpan.innerText = "Atenção";
+                valorSpan.innerText = "Preencha o peso e altura!";
+                valorSpan.style.color = "#f87171"; // vermelho
+                resultadoDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Correção caso a pessoa digite 175 em vez de 1.75
+            let alturaFinal = altura > 3 ? altura / 100 : altura;
+
+            const imc = (peso / (alturaFinal * alturaFinal)).toFixed(1);
+            let classificacao = "";
+            
+            if (imc < 18.5) classificacao = "Abaixo do peso";
+            else if (imc < 25) classificacao = "Peso normal";
+            else if (imc < 30) classificacao = "Sobrepeso";
+            else classificacao = "Obesidade";
+
+            mensagemSpan.innerText = "Diagnóstico Corporal";
+            valorSpan.innerText = `${imc} - ${classificacao}`;
+            valorSpan.style.color = "var(--emerald)";
+            resultadoDiv.classList.remove('hidden');
+        }
+
+        // Função Dieta
+        async function generateDiet() {
+            const resDiv = document.getElementById('diet-result');
+            const ingredientes = document.getElementById('diet-ingredients').value;
+            const btn = document.getElementById('btn-gerar');
+
+            if (!ingredientes) {
+                resDiv.innerText = "Digite algum ingrediente primeiro.";
+                resDiv.classList.remove('hidden');
+                return;
+            }
+
+            btn.innerHTML = 'Calculando...';
+            resDiv.innerText = "Analisando ingredientes...";
+            resDiv.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/api/index', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ingredientes })
+                });
+                
+                if (!response.ok) throw new Error("Erro na rede");
+                
+                const data = await response.json();
+                
+                // Pegando a resposta e permitindo quebra de linha visual
+                let texto = data.choices[0].message.content;
+                resDiv.innerHTML = texto.replace(/\n/g, '<br>');
+            } catch(e) { 
+                resDiv.innerHTML = "Não foi possível conectar à inteligência artificial.<br><span style='font-size: 10px; color: #f87171;'>Verifique se a variável OPENAI_API_KEY está certa na Vercel e se o arquivo api/index.js foi enviado ao GitHub.</span>"; 
+            }
+            
+            btn.innerHTML = 'Gerar Prato Proteico';
         }
     </script>
 </body>
