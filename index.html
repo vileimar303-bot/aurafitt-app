@@ -18,14 +18,7 @@
             --grad: linear-gradient(90deg, #34d399, #2dd4bf);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg); 
-            color: #f1f5f9; 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #f1f5f9; min-height: 100vh; display: flex; justify-content: center; }
         .premium-title { font-family: 'Playfair Display', serif; font-style: italic; color: var(--emerald); font-weight: 500;}
         .glass-panel { background: var(--panel); border: 1px solid var(--panelBorder); border-radius: 16px; }
         
@@ -35,6 +28,7 @@
         
         .btn-primary { background: var(--grad); color: #02150f; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px; border-radius: 12px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; border: none; cursor: pointer; transition: all 0.2s; margin-top: 16px;}
         .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:disabled { opacity: 0.6; cursor: wait; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -45,18 +39,14 @@
         .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
         .tab-content.active { display: flex; flex-direction: column; gap: 16px; }
         
-        .month-btn { padding: 8px 0; font-size: 11px; font-weight: 700; border-radius: 8px; transition: all 0.2s; cursor: pointer; border: 1px solid #1c2438; background: #080d1a; color: var(--textDim); width: 100%; text-align: center;}
-        .month-btn.active { border: 1px solid rgba(52,211,153,0.5); background: rgba(52,211,153,0.1); color: var(--emerald); }
+        .month-btn, .meal-btn { padding: 8px 0; font-size: 11px; font-weight: 700; border-radius: 8px; transition: all 0.2s; cursor: pointer; border: 1px solid #1c2438; background: #080d1a; color: var(--textDim); width: 100%; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+        .month-btn.active, .meal-btn.active { border: 1px solid rgba(52,211,153,0.5); background: rgba(52,211,153,0.1); color: var(--emerald); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Animação de scanner no simulador */
         @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 95%; } }
         .animate-scan { animation: scan 2s ease-in-out infinite; }
 
-        @media (min-width: 768px) { 
-            .app-container { border-radius: 42px; border: 8px solid #1e293b; min-height: 850px; box-shadow: 0 0 50px rgba(16,185,129,0.05); margin-top: 20px; margin-bottom: 20px; } 
-        }
+        @media (min-width: 768px) { .app-container { border-radius: 42px; border: 8px solid #1e293b; min-height: 850px; box-shadow: 0 0 50px rgba(16,185,129,0.05); margin-top: 20px; margin-bottom: 20px; } }
     </style>
 </head>
 <body class="bg-[#030712] p-0 md:p-4">
@@ -73,29 +63,16 @@
                         AuraFitt <span class="premium-title">AI</span>
                     </span>
                 </div>
-                <span class="text-[9px] font-[700] uppercase tracking-[0.1em] px-2 py-1 rounded-full" style="background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--emerald);">
-                    Premium
-                </span>
+                <span class="text-[9px] font-[700] uppercase tracking-[0.1em] px-2 py-1 rounded-full" style="background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--emerald);">Premium</span>
             </div>
 
-            <!-- Tab Navigation -->
             <div class="no-scrollbar flex gap-2 overflow-x-auto pb-1">
-                <button type="button" onclick="switchTab('perfil', this)" class="tab-btn active">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v1"/><path d="M19 13v1"/><path d="M22 11h-1"/><path d="M17 11h-1"/></svg>
-                    Meu Perfil
-                </button>
-                <button type="button" onclick="switchTab('simulacao', this)" class="tab-btn">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
-                    Simulador
-                </button>
-                <button type="button" onclick="switchTab('proteina', this)" class="tab-btn">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22 22 2"/><path d="M16 2a4 4 0 0 0-4 4v3l5 5h3a4 4 0 0 0 4-4 4 4 0 0 0-4-4z"/><path d="M8 8a4 4 0 0 0-4 4v3l5 5h3a4 4 0 0 0 4-4 4 4 0 0 0-4-4z"/><path d="M2 12a4 4 0 0 0 4 4h3l5-5V8a4 4 0 0 0-4-4 4 4 0 0 0-4 4z"/></svg>
-                    Dieta
-                </button>
+                <button type="button" onclick="switchTab('perfil', this)" class="tab-btn active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Perfil</button>
+                <button type="button" onclick="switchTab('simulacao', this)" class="tab-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg> Simulador</button>
+                <button type="button" onclick="switchTab('proteina', this)" class="tab-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22 22 2"/><path d="M16 2a4 4 0 0 0-4 4v3l5 5h3a4 4 0 0 0 4-4 4 4 0 0 0-4-4z"/></svg> Dieta</button>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="flex-grow px-5 py-2 overflow-y-auto no-scrollbar">
             
             <!-- 1. ABA PERFIL -->
@@ -132,11 +109,8 @@
                     </div>
                 </div>
 
-                <button onclick="calcularIMC()" class="btn-primary">
-                    Calcular IMC 
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
-                </button>
-
+                <button onclick="calcularIMC()" class="btn-primary">Calcular IMC</button>
+                
                 <div id="imc-resultado" class="hidden glass-panel p-4 text-center border-[rgba(52,211,153,0.3)] bg-[rgba(16,185,129,0.05)] mt-2">
                     <span id="imc-mensagem" class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Diagnóstico Corporal</span>
                     <span id="imc-valor" class="text-xl font-extrabold text-emerald-400"></span>
@@ -146,8 +120,8 @@
             <!-- 2. ABA SIMULADOR -->
             <div id="tab-simulacao" class="tab-content">
                 <div class="glass-panel p-6 text-center" id="simulador-controle">
-                    <h2 class="text-[18px] font-[800] mb-2">Simulador</h2>
-                    <p class="text-[12px] mb-6" style="color: var(--textDim);">Escolha o período da sua transformação visual.</p>
+                    <h2 class="text-[18px] font-[800] mb-2">Simulador Real</h2>
+                    <p class="text-[12px] mb-6 text-slate-400">A Inteligência Artificial da OpenAI criará uma imagem projetando o seu corpo na sua meta de peso.</p>
                     
                     <div class="grid grid-cols-4 gap-2 mb-6" id="meses-container">
                         <div class="month-btn active" data-val="1" onclick="selecionarMes(this)">1 Mês</div>
@@ -156,62 +130,44 @@
                         <div class="month-btn" data-val="4" onclick="selecionarMes(this)">4 Meses</div>
                     </div>
                     
-                    <label for="foto-upload" class="cursor-pointer border-dashed border-2 border-[#1c2438] rounded-xl p-6 bg-[#080d1a] mb-2 flex flex-col items-center transition-all hover:border-[rgba(52,211,153,0.5)]">
+                    <label for="foto-upload" class="cursor-pointer border-dashed border-2 border-[#1c2438] rounded-xl p-6 bg-[#080d1a] mb-2 flex flex-col items-center hover:border-emerald-500">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mx-auto mb-2 text-slate-500"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                        <p class="text-[12px] font-[700] text-slate-400">Clique para anexar foto</p>
+                        <p class="text-[12px] font-[700] text-slate-400">Anexe sua foto base</p>
                         <input type="file" id="foto-upload" class="hidden" accept="image/*" onchange="mostrarNomeFoto(this)">
                     </label>
-                    <p id="nome-foto-selecionada" class="text-[10px] font-bold text-emerald-400 mt-2 mb-4 hidden"></p>
+                    <p id="nome-foto-selecionada" class="text-[10px] font-bold text-emerald-400 mt-2 hidden"></p>
 
-                    <button onclick="gerarProjecao(this)" class="btn-primary !mt-2" id="btn-gerar-simulacao">
-                        Gerar Projeção
+                    <button onclick="gerarProjecaoReal(this)" class="btn-primary" id="btn-gerar-simulacao">
+                        Gerar Imagem com OpenAI
                     </button>
+                    <!-- Área para mostrar o erro visualmente -->
+                    <p id="simulador-erro" class="text-[10px] text-red-400 font-bold mt-3 hidden"></p>
                 </div>
 
                 <!-- TELA DE RESULTADO -->
-                <div id="simulador-resultado" class="hidden flex-col gap-4 animate-fade-in mt-2">
-                    <div class="bg-[#020617] border border-[rgba(16,185,129,0.2)] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-                        
-                        <div class="bg-[rgba(15,23,42,0.5)] py-3 px-4 flex justify-between items-center border-b border-[rgba(16,185,129,0.2)]">
-                            <span class="text-[10px] font-[800] text-emerald-400 tracking-[0.1em] uppercase flex items-center gap-2">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> 
-                                PREVISÃO AURAFITT
-                            </span>
-                            <span id="res-mes-texto" class="text-[9px] bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.2)] text-emerald-400 px-2 py-0.5 rounded-full font-[800]">
-                                1 MÊS
-                            </span>
+                <div id="simulador-resultado" class="hidden flex-col gap-4 mt-2">
+                    <div class="bg-[#020617] border border-emerald-500/20 rounded-2xl overflow-hidden">
+                        <div class="bg-slate-900/50 py-3 px-4 text-center border-b border-emerald-500/20 flex justify-between items-center">
+                            <span class="text-[10px] font-[800] text-emerald-400 tracking-[0.1em] uppercase">IMAGEM GERADA PELA IA</span>
+                            <span id="res-mes-texto" class="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-[800]">1 MÊS</span>
                         </div>
-                        
-                        <!-- Miniatura da Foto - CSS CORRIGIDO PARA APARECER -->
-                        <div class="p-6 bg-gradient-to-b from-[#030814] to-[#010308] flex flex-col items-center relative min-h-[220px] justify-center">
-                            <div class="w-32 h-32 rounded-3xl border border-[rgba(52,211,153,0.3)] overflow-hidden relative shadow-[0_0_20px_rgba(16,185,129,0.15)] mb-4">
-                                <img id="res-img-preview" src="" class="w-full h-full object-cover opacity-90" />
-                                <div class="absolute inset-0 bg-gradient-to-t from-[rgba(16,185,129,0.2)] to-transparent pointer-events-none"></div>
-                                <div class="absolute top-0 left-0 w-full h-1 bg-emerald-400 opacity-80 shadow-[0_0_10px_#34d399] animate-scan pointer-events-none"></div>
-                            </div>
-                            <p class="text-[10px] text-slate-400 text-center uppercase tracking-[0.1em]">Modelo Estrutural Facial<br><span class="text-emerald-400 font-bold">Mapeamento Concluído</span></p>
+                        <div class="p-2 bg-gradient-to-b from-[#030814] to-[#010308] flex flex-col items-center justify-center">
+                            <img id="res-img-preview" src="" class="w-full h-auto rounded-xl shadow-lg border border-slate-800" alt="Evolução Fitness" />
                         </div>
                     </div>
 
-                    <!-- Cartões de Dados Projetados -->
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 gap-2">
                         <div class="glass-panel p-3 text-center">
                             <span class="block text-[9px] font-[800] text-slate-400 uppercase tracking-widest mb-1">Peso Alvo</span>
                             <span class="text-sm font-[800]" id="res-peso">-- kg</span>
                         </div>
                         <div class="glass-panel p-3 text-center border-[rgba(16,185,129,0.3)] bg-[rgba(16,185,129,0.05)]">
-                            <span class="block text-[9px] font-[800] text-emerald-400 uppercase tracking-widest mb-1">Gordura %</span>
-                            <span class="text-sm font-[800] text-emerald-400" id="res-gordura">-- %</span>
-                        </div>
-                        <div class="glass-panel p-3 text-center">
-                            <span class="block text-[9px] font-[800] text-slate-400 uppercase tracking-widest mb-1">Fase</span>
-                            <span class="text-[11px] font-[800] text-white">Secagem</span>
+                            <span class="block text-[9px] font-[800] text-emerald-400 uppercase tracking-widest mb-1">Fase</span>
+                            <span class="text-sm font-[800] text-emerald-400">Secagem</span>
                         </div>
                     </div>
 
-                    <button onclick="resetarSimulador()" class="mt-2 text-[11px] text-slate-400 underline uppercase tracking-widest font-bold hover:text-emerald-400 transition-colors text-center w-full block">
-                        Fazer nova simulação
-                    </button>
+                    <button onclick="resetarSimulador()" class="text-[11px] text-slate-400 underline uppercase font-bold text-center w-full block mt-2">Fazer Nova Simulação</button>
                 </div>
             </div>
 
@@ -219,122 +175,66 @@
             <div id="tab-proteina" class="tab-content">
                 <div class="glass-panel p-6">
                     <h2 class="text-[18px] font-[800] mb-2">Dieta</h2>
-                    <p class="text-[12px] mb-5" style="color: var(--textDim);">Monte em segundos uma refeição com prioridade em proteínas.</p>
+                    <p class="text-[12px] mb-5 text-slate-400">Monte em segundos uma refeição com prioridade em proteínas.</p>
                     
-                    <textarea id="diet-ingredients" rows="4" placeholder="Ex: ovos, peito de frango, aveia, banana..." class="input-field resize-none mb-2"></textarea>
+                    <label class="input-label !mt-0 !mb-2">Quais refeições deseja montar?</label>
+                    <div class="flex gap-2 mb-4">
+                        <div class="meal-btn active" onclick="this.classList.toggle('active')">Café da Manhã</div>
+                        <div class="meal-btn active" onclick="this.classList.toggle('active')">Almoço</div>
+                        <div class="meal-btn active" onclick="this.classList.toggle('active')">Jantar</div>
+                    </div>
 
-                    <button onclick="generateDiet()" id="btn-gerar" class="btn-primary">
-                        Gerar Prato Proteico 
+                    <label class="input-label !mt-0 !mb-2">Seus ingredientes</label>
+                    <textarea id="diet-ingredients" rows="4" placeholder="Ex: ovos, frango, aveia, banana..." class="input-field resize-none mb-2"></textarea>
+
+                    <button onclick="generateDietReal()" id="btn-gerar-dieta" class="btn-primary">
+                        Gerar Prato Proteico (OpenAI)
                     </button>
 
                     <div id="diet-result" class="hidden p-4 mt-4 text-sm text-slate-200 leading-relaxed border-t border-[#1c2438]"></div>
                 </div>
             </div>
-
         </main>
     </div>
 
     <script>
-        // Trocar Abas
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById('tab-' + tabId).classList.add('active');
             btnElement.classList.add('active');
         }
 
-        // Simulador - Meses
         let mesSelecionado = 1;
-        function selecionarMes(btnElement) {
+        function selecionarMes(btn) {
             document.querySelectorAll('.month-btn').forEach(el => el.classList.remove('active'));
-            btnElement.classList.add('active');
-            mesSelecionado = parseInt(btnElement.getAttribute('data-val'));
+            btn.classList.add('active');
+            mesSelecionado = parseInt(btn.getAttribute('data-val'));
         }
 
-        // Mostrar nome da foto
         function mostrarNomeFoto(input) {
             const displayNome = document.getElementById('nome-foto-selecionada');
             if (input.files && input.files[0]) {
-                displayNome.innerText = "✓ Arquivo anexado: " + input.files[0].name;
+                displayNome.innerText = "✓ Arquivo pronto para envio: " + input.files[0].name;
                 displayNome.classList.remove('hidden');
             }
-        }
-
-        // LÓGICA DO SIMULADOR (CORRIGIDA)
-        function gerarProjecao(btn) {
-            const inputFoto = document.getElementById('foto-upload');
-            const metaPesoInput = document.getElementById('meta-peso').value;
-
-            if(!inputFoto.files || !inputFoto.files[0]) {
-                alert("Por favor, clique na área pontilhada e anexe sua foto primeiro!");
-                return;
-            }
-
-            const originalText = btn.innerHTML;
-            btn.innerHTML = 'Analisando traços corporais...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
-                btn.innerHTML = 'Desenhando projeção...';
-                setTimeout(() => {
-                    btn.innerHTML = 'Simulação Concluída!';
-                    btn.style.background = '#10b981';
-                    btn.style.color = '#fff';
-                    
-                    setTimeout(() => {
-                        // Esconde o controle, mostra o resultado
-                        document.getElementById('simulador-controle').classList.add('hidden');
-                        document.getElementById('simulador-resultado').style.display = 'flex';
-                        
-                        // LER IMAGEM COM FILEREADER (Funciona 100% em mobile)
-                        const leitor = new FileReader();
-                        leitor.onload = function(e) {
-                            document.getElementById('res-img-preview').src = e.target.result;
-                        }
-                        leitor.readAsDataURL(inputFoto.files[0]);
-
-                        // Atualiza o texto do mês
-                        document.getElementById('res-mes-texto').innerText = mesSelecionado + (mesSelecionado === 1 ? " MÊS" : " MESES");
-
-                        // Puxa a Meta de Peso
-                        let metaExibida = metaPesoInput ? parseFloat(metaPesoInput.replace(',', '.')) : 75;
-                        document.getElementById('res-peso').innerText = metaExibida + " kg";
-
-                        // Simula % de gordura
-                        let fatPerc = 25 - (mesSelecionado * 2);
-                        document.getElementById('res-gordura').innerText = fatPerc + "%";
-
-                        // Restaura o botão original para a próxima vez
-                        btn.innerHTML = originalText;
-                        btn.style.background = '';
-                        btn.style.color = '';
-                        btn.disabled = false;
-                    }, 1000);
-                }, 1500);
-            }, 1500);
         }
 
         function resetarSimulador() {
             document.getElementById('simulador-resultado').style.display = 'none';
             document.getElementById('simulador-controle').classList.remove('hidden');
-            document.getElementById('foto-upload').value = "";
-            document.getElementById('nome-foto-selecionada').classList.add('hidden');
-            document.getElementById('res-img-preview').src = "";
+            document.getElementById('simulador-erro').classList.add('hidden');
         }
 
-        // IMC
         function calcularIMC() {
             let pesoInput = document.getElementById('peso').value.replace(',', '.');
             let alturaInput = document.getElementById('altura').value.replace(',', '.');
             const peso = parseFloat(pesoInput);
             const altura = parseFloat(alturaInput);
             const resultadoDiv = document.getElementById('imc-resultado');
-            const mensagemSpan = document.getElementById('imc-mensagem');
             const valorSpan = document.getElementById('imc-valor');
             
             if (!peso || !altura) {
-                mensagemSpan.innerText = "Atenção";
                 valorSpan.innerText = "Preencha o peso e altura!";
                 valorSpan.style.color = "#f87171";
                 resultadoDiv.classList.remove('hidden');
@@ -343,54 +243,127 @@
 
             let alturaFinal = altura > 3 ? altura / 100 : altura;
             const imc = (peso / (alturaFinal * alturaFinal)).toFixed(1);
-            let classificacao = "";
-            
-            if (imc < 18.5) classificacao = "Abaixo do peso";
-            else if (imc < 25) classificacao = "Peso normal";
-            else if (imc < 30) classificacao = "Sobrepeso";
-            else classificacao = "Obesidade";
+            let classificacao = imc < 18.5 ? "Abaixo do peso" : imc < 25 ? "Peso normal" : imc < 30 ? "Sobrepeso" : "Obesidade";
 
-            mensagemSpan.innerText = "Diagnóstico Corporal";
             valorSpan.innerText = `${imc} - ${classificacao}`;
             valorSpan.style.color = "var(--emerald)";
             resultadoDiv.classList.remove('hidden');
         }
 
-        // Dieta
-        async function generateDiet() {
+        // ==========================================
+        // COMUNICAÇÃO REAL DO SIMULADOR
+        // ==========================================
+        async function gerarProjecaoReal(btn) {
+            const inputFoto = document.getElementById('foto-upload');
+            const metaPesoInput = document.getElementById('meta-peso').value || '75';
+            const msgErro = document.getElementById('simulador-erro');
+
+            msgErro.classList.add('hidden'); // Esconde o erro passado
+
+            if(!inputFoto.files || !inputFoto.files[0]) {
+                msgErro.innerText = "⚠️ Anexe sua foto antes de clicar no botão.";
+                msgErro.classList.remove('hidden');
+                return;
+            }
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Aguarde. A IA está processando...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/index', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        acao: 'gerar_projecao',
+                        meta: metaPesoInput,
+                        meses: mesSelecionado
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Erro ao conectar com servidor.");
+                }
+
+                if (data.imageUrl) {
+                    document.getElementById('simulador-controle').classList.add('hidden');
+                    document.getElementById('simulador-resultado').style.display = 'flex';
+                    
+                    document.getElementById('res-img-preview').src = data.imageUrl;
+                    document.getElementById('res-mes-texto').innerText = mesSelecionado + (mesSelecionado === 1 ? " MÊS" : " MESES");
+                    document.getElementById('res-peso').innerText = metaPesoInput + " kg";
+                } else {
+                    throw new Error("A IA não retornou nenhuma imagem.");
+                }
+
+            } catch (e) {
+                msgErro.innerText = "❌ Erro do Servidor: " + e.message + " (O tempo limite pode ter esgotado).";
+                msgErro.classList.remove('hidden');
+            }
+
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+
+        // ==========================================
+        // COMUNICAÇÃO REAL DA DIETA (COM BOTÕES)
+        // ==========================================
+        async function generateDietReal() {
             const resDiv = document.getElementById('diet-result');
             const ingredientes = document.getElementById('diet-ingredients').value;
-            const btn = document.getElementById('btn-gerar');
+            const btn = document.getElementById('btn-gerar-dieta');
+
+            // Pega as refeições que estão marcadas com a classe "active"
+            let refeicoesEscolhidas = [];
+            document.querySelectorAll('.meal-btn.active').forEach(b => refeicoesEscolhidas.push(b.innerText));
 
             if (!ingredientes) {
-                resDiv.innerText = "Digite algum ingrediente primeiro.";
+                resDiv.innerHTML = "<span style='color: #f87171;'>⚠️ Digite os ingredientes antes de gerar.</span>";
+                resDiv.classList.remove('hidden');
+                return;
+            }
+            if (refeicoesEscolhidas.length === 0) {
+                resDiv.innerHTML = "<span style='color: #f87171;'>⚠️ Selecione ao menos uma refeição nos botões acima.</span>";
                 resDiv.classList.remove('hidden');
                 return;
             }
 
-            btn.innerHTML = 'Calculando...';
-            resDiv.innerHTML = "A IA está analisando os ingredientes...";
+            btn.innerHTML = 'Calculando Dieta...';
+            btn.disabled = true;
+            resDiv.innerHTML = "Comunicando com o ChatGPT...";
             resDiv.classList.remove('hidden');
             
             try {
                 const response = await fetch('/api/index', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ingredientes })
+                    body: JSON.stringify({ 
+                        acao: 'gerar_dieta',
+                        refeicoes: refeicoesEscolhidas.join(', '),
+                        ingredientes: ingredientes 
+                    })
                 });
                 
+                const data = await response.json();
+
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Erro do Servidor (${response.status}): ${errorText.substring(0, 50)}...`);
+                    throw new Error(data.error || "Erro ao conectar com servidor.");
                 }
                 
-                const data = await response.json();
-                let texto = data.choices[0].message.content;
-                resDiv.innerHTML = texto.replace(/\n/g, '<br>');
+                if(data.result) {
+                     resDiv.innerHTML = data.result.replace(/\n/g, '<br>');
+                } else {
+                    throw new Error("A IA devolveu um texto vazio.");
+                }
+
             } catch(e) { 
-                resDiv.innerHTML = `<span style='color: #f87171; font-weight: bold;'>Falha de Conexão com Vercel:</span><br><br>${e.message}<br><br><span style='font-size: 11px; color: #94a3b8;'>Verifique se o seu arquivo api/index.js subiu corretamente no GitHub ou se a chave OPENAI_API_KEY foi adicionada no Vercel.</span>`; 
+                resDiv.innerHTML = `<span style='color: #f87171; font-weight: bold;'>❌ Falha no Servidor:</span><br>${e.message}`; 
             }
-            btn.innerHTML = 'Gerar Prato Proteico';
+
+            btn.innerHTML = 'Gerar Prato Proteico (OpenAI)';
+            btn.disabled = false;
         }
     </script>
 </body>
