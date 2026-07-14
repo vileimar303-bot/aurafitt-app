@@ -1,5 +1,5 @@
 module.exports = async (req, res) => {
-    // Permite que o seu site converse com o servidor
+    // Permite a comunicação entre o site e a Vercel
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -8,13 +8,13 @@ module.exports = async (req, res) => {
     if (req.method !== 'POST') return res.status(405).json({ error: "Método não permitido" });
 
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return res.status(500).json({ error: "Chave da OpenAI (OPENAI_API_KEY) não encontrada na Vercel." });
+    if (!apiKey) return res.status(500).json({ error: "Chave da OpenAI (OPENAI_API_KEY) não encontrada nas configurações da Vercel." });
 
     const { acao, ingredientes, refeicoes, meta, meses } = req.body;
 
     try {
         // ==========================================
-        // 1. GERADOR DE DIETA (VIA CHATGPT)
+        // 1. GERADOR DE DIETA (VIA CHATGPT TEXTO)
         // ==========================================
         if (acao === 'gerar_dieta') {
             const prompt = `Crie uma dieta hiperproteica estrita. Refeições solicitadas: ${refeicoes}. Ingredientes disponíveis: ${ingredientes}. Responda como um nutricionista clínico, indo direto ao ponto do cardápio.`;
@@ -38,10 +38,10 @@ module.exports = async (req, res) => {
         }
 
         // ==========================================
-        // 2. SIMULADOR DE IMAGEM (VIA DALL-E)
+        // 2. SIMULADOR DE IMAGEM (VIA DALL-E 3)
         // ==========================================
         if (acao === 'gerar_projecao') {
-            // A OpenAI gera um corpo baseado no texto (ela não faz deepfake do rosto)
+            // Instrução em inglês para o DALL-E 3 gerar o corpo transformado
             const promptImagem = `Professional fitness photography of an athletic transformation. A highly muscular, lean and shredded person representing a goal weight of ${meta}kg after ${meses} months of training. Gym setting, dramatic cinematic lighting, 8k resolution, photorealistic.`;
             
             const response = await fetch('https://api.openai.com/v1/images/generations', {
@@ -61,6 +61,7 @@ module.exports = async (req, res) => {
             const data = await response.json();
             if (data.error) throw new Error(data.error.message);
             
+            // Devolve a URL da imagem processada
             return res.status(200).json({ imageUrl: data.data[0].url });
         }
 
